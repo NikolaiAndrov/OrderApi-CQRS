@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="OrderApiCQRS/OrderApiCQRS.csproj" />
+  <Folder Name="/Data/">
+    <Project Path="OrderApiCQRS.Data.Models/OrderApiCQRS.Data.Models.csproj" Id="60057373-676e-47d1-a69f-6e217c891801" />
+    <Project Path="OrderApiCQRS.Data/OrderApiCQRS.Data.csproj" Id="c87da857-aedc-4be6-b45f-bee9f367b04d" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="OrderApiCQRS/OrderApiCQRS.csproj" />
+  </Folder>
 </Solution>
