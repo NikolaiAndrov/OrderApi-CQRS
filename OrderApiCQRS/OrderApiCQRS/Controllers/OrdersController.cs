@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
-using OrderApiCQRS.Application.Features.Products.QueryHandlers;
-using OrderApiCQRS.Application.Features.Products.CommandHandlers;
-using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
+using OrderApiCQRS.Application.Features.Interfaces;
 
 namespace OrderApiCQRS.Controllers
 {
@@ -12,17 +10,20 @@ namespace OrderApiCQRS.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly AppDbContext dbContext;
+        private readonly ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler;
+        private readonly IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler;
 
-        public OrdersController(AppDbContext dbContext)
+        public OrdersController(ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler,
+            IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler)
         {
-            this.dbContext = dbContext;
+            this.createOrderCommandHandler = createOrderCommandHandler;
+            this.getOrderByIdQueryHandler = getOrderByIdQueryHandler;
         }
 
         [HttpGet("{Id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int Id)
         {
-            ViewOrderDto? viewOrderDto = await GetOrderByIdQueryHandler.Handle(new GetOrderByIdQuery(Id), dbContext);
+            ViewOrderDto? viewOrderDto = await this.getOrderByIdQueryHandler.HandleAsync(new GetOrderByIdQuery(Id));
 
             if (viewOrderDto == null)
             {
@@ -35,7 +36,7 @@ namespace OrderApiCQRS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            ViewOrderDto? viewOrderDto = await CreateOrderCommandHandler.Handle(createOrderCommand, dbContext);
+            ViewOrderDto? viewOrderDto = await this.createOrderCommandHandler.HandleAsync(createOrderCommand);
 
             if (viewOrderDto == null)
             {

@@ -1,15 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
 {
-    public class GetOrderByIdQueryHandler
+    public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, ViewOrderDto>
     {
-        public static async Task<ViewOrderDto?> Handle(GetOrderByIdQuery getOrderByIdQuery, AppDbContext dbContext)
+        private readonly AppDbContext dbContext;
+
+        public GetOrderByIdQueryHandler(AppDbContext dbContext)
         {
-            ViewOrderDto? viewOrderDto = await dbContext.Orders
+            this.dbContext = dbContext;
+        }
+
+        public async Task<ViewOrderDto?> HandleAsync(GetOrderByIdQuery getOrderByIdQuery)
+        {
+            ViewOrderDto? viewOrderDto = await this.dbContext.Orders
                 .AsNoTracking()
                 .Where(o => o.Id == getOrderByIdQuery.Id)
                 .Select(o => new ViewOrderDto

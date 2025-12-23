@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using OrderApiCQRS.Application.Features.Interfaces;
+using OrderApiCQRS.Application.Features.Products.CommandHandlers;
+using OrderApiCQRS.Application.Features.Products.Commands;
+using OrderApiCQRS.Application.Features.Products.Queries;
+using OrderApiCQRS.Application.Features.Products.QueryHandlers;
 using OrderApiCQRS.Data;
+using OrderApiCQRS.DtoModels.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -14,6 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<ICommandHandler<CreateOrderCommand, ViewOrderDto>, CreateOrderCommandHandler>();
+builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOrderByIdQueryHandler>();
 
 var app = builder.Build();
 
