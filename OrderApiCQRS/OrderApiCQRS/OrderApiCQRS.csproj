@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrderApiCQRS.Application\OrderApiCQRS.Application.csproj" />
     <ProjectReference Include="..\OrderApiCQRS.Data\OrderApiCQRS.Data.csproj" />
+    <ProjectReference Include="..\OrderApiCQRS.DtoModels\OrderApiCQRS.DtoModels.csproj" />
   </ItemGroup>
 
 </Project>

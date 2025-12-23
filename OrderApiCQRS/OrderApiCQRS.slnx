@@ -4,6 +4,8 @@
     <Project Path="OrderApiCQRS.Data/OrderApiCQRS.Data.csproj" Id="c87da857-aedc-4be6-b45f-bee9f367b04d" />
   </Folder>
   <Folder Name="/Web/">
+    <Project Path="OrderApiCQRS.Application/OrderApiCQRS.Application.csproj" Id="8d3adb47-a4b5-47db-9f8e-810931979560" />
+    <Project Path="OrderApiCQRS.DtoModels/OrderApiCQRS.DtoModels.csproj" Id="d13f5edf-70c8-4e1c-8508-0714cda674b9" />
     <Project Path="OrderApiCQRS/OrderApiCQRS.csproj" />
   </Folder>
 </Solution>
