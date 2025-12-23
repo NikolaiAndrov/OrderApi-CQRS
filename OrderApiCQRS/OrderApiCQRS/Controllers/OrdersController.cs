@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.Application.Features.Products.QueryHandlers;
+using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
 
@@ -17,7 +19,7 @@ namespace OrderApiCQRS.Controllers
             this.dbContext = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("{Id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int Id)
         {
             ViewOrderDto? viewOrderDto = await GetOrderByIdQueryHandler.Handle(new GetOrderByIdQuery(Id), dbContext);
@@ -28,6 +30,19 @@ namespace OrderApiCQRS.Controllers
             }
 
             return Ok(viewOrderDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
+        {
+            ViewOrderDto? viewOrderDto = await CreateOrderCommandHandler.Handle(createOrderCommand, dbContext);
+
+            if (viewOrderDto == null)
+            {
+                return this.BadRequest();
+            }
+
+            return this.CreatedAtAction(nameof(this.GetById), new {Id = viewOrderDto.Id}, viewOrderDto);
         }
     }
 }

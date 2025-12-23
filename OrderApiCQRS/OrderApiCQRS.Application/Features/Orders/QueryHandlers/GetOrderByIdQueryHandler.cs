@@ -10,6 +10,7 @@ namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
         public static async Task<ViewOrderDto?> Handle(GetOrderByIdQuery getOrderByIdQuery, AppDbContext dbContext)
         {
             ViewOrderDto? viewOrderDto = await dbContext.Orders
+                .AsNoTracking()
                 .Where(o => o.Id == getOrderByIdQuery.Id)
                 .Select(o => new ViewOrderDto
                 {
