@@ -1,13 +1,14 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Features.Interfaces;
+using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.Application.Features.Products.QueryHandlers;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
-using FluentValidation;
-using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
+using OrderApiCQRS.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOr
 
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 
+builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +36,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExeptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
