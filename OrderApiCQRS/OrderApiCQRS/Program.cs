@@ -2,6 +2,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
+using OrderApiCQRS.Application.Features.Orders.Queries;
+using OrderApiCQRS.Application.Features.Orders.QueryHandlers;
 using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICommandHandler<CreateOrderCommand, ViewOrderDto>, CreateOrderCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOrderByIdQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>, GetAllOrdersQueryHandler>();
 
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 

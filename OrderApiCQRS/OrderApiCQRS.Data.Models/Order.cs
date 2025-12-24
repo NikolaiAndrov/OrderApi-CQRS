@@ -1,4 +1,6 @@
-﻿namespace OrderApiCQRS.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrderApiCQRS.Data.Models
 {
     public class Order
     {
@@ -7,6 +9,7 @@
             this.CreatedAt = DateTime.UtcNow;
         }
 
+        [Key]
         public int Id { get; set; }
 
         public required string CustomerFirstName { get; set; }
