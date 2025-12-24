@@ -3,6 +3,7 @@ using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.DtoModels.Order;
 using OrderApiCQRS.Application.Features.Interfaces;
+using OrderApiCQRS.Application.Features.Orders.Queries;
 
 namespace OrderApiCQRS.Controllers
 {
@@ -12,12 +13,15 @@ namespace OrderApiCQRS.Controllers
     {
         private readonly ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler;
         private readonly IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler;
+        private readonly IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>> getAllOrdersQueryHandler;
 
         public OrdersController(ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler,
-            IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler)
+            IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler,
+             IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>> getAllOrdersQueryHandler)
         {
             this.createOrderCommandHandler = createOrderCommandHandler;
             this.getOrderByIdQueryHandler = getOrderByIdQueryHandler;
+            this.getAllOrdersQueryHandler = getAllOrdersQueryHandler;
         }
 
         [HttpGet("{Id:int}")]
@@ -33,6 +37,14 @@ namespace OrderApiCQRS.Controllers
             return Ok(viewOrderDto);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllOrdersQuery getAllOrdersQuery)
+        {
+            ICollection<ViewOrderDto>? viewOrderDtos = await this.getAllOrdersQueryHandler.HandleAsync(getAllOrdersQuery);
+
+            return this.Ok(viewOrderDtos);
+        }
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
