@@ -7,7 +7,7 @@ using OrderApiCQRS.Application.Features.Products.QueryHandlers;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
 using FluentValidation;
-using OrderApiCQRS.Application.Features.Orders.CommandHandlers.Validators;
+using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
