@@ -54,12 +54,15 @@ namespace OrderApiCQRS.Middlewares
 
         private int GetStatusCode(Exception ex)
         {
-            if (ex is ValidationException)
+            return ex switch
             {
-                return (int)HttpStatusCode.BadRequest;
-            }
-
-            return (int)HttpStatusCode.InternalServerError;
+                ValidationException => (int)HttpStatusCode.BadRequest,
+                ArgumentException => (int)HttpStatusCode.BadRequest,
+                KeyNotFoundException => (int)HttpStatusCode.NotFound,
+                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+                DbUpdateConcurrencyException => (int)HttpStatusCode.Conflict,
+                _ => (int)HttpStatusCode.InternalServerError
+            };
         }
 
         private string GetMessage(Exception ex)
