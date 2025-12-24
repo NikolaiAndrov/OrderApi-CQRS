@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
+using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
 using OrderApiCQRS.Application.Features.Orders.QueryHandlers;
 using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Application.Features.Products.Commands;
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOr
 builder.Services.AddScoped<IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>, GetAllOrdersQueryHandler>();
 
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
+builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValidator>();
 
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 
