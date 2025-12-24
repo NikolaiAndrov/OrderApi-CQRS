@@ -3,6 +3,7 @@ using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.DtoModels.Order;
 using OrderApiCQRS.Application.Features.Interfaces;
+using FluentValidation;
 
 namespace OrderApiCQRS.Controllers
 {
@@ -36,14 +37,24 @@ namespace OrderApiCQRS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            ViewOrderDto? viewOrderDto = await this.createOrderCommandHandler.HandleAsync(createOrderCommand);
 
-            if (viewOrderDto == null)
+            try
             {
-                return this.BadRequest();
-            }
+                ViewOrderDto? viewOrderDto = await this.createOrderCommandHandler.HandleAsync(createOrderCommand);
 
-            return this.CreatedAtAction(nameof(this.GetById), new {Id = viewOrderDto.Id}, viewOrderDto);
+                if (viewOrderDto == null)
+                {
+                    return this.BadRequest();
+                }
+
+                return this.CreatedAtAction(nameof(this.GetById), new {Id = viewOrderDto.Id}, viewOrderDto);
+            }
+            catch (ValidationException ex)
+            {
+                var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
+
+                return this.BadRequest(errors);
+            }
         }
     }
 }

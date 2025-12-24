@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using OrderApiCQRS.Application.Features.Products.Commands;
 
-namespace OrderApiCQRS.Application.Features.Orders.Commands.Validations
+namespace OrderApiCQRS.Application.Features.Orders.CommandHandlers.Validators
 {
     public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
     {

@@ -6,6 +6,8 @@ using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.Application.Features.Products.QueryHandlers;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
+using FluentValidation;
+using OrderApiCQRS.Application.Features.Orders.CommandHandlers.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICommandHandler<CreateOrderCommand, ViewOrderDto>, CreateOrderCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOrderByIdQueryHandler>();
+
+builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 
 var app = builder.Build();
 

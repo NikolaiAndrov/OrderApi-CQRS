@@ -1,4 +1,6 @@
-﻿using OrderApiCQRS.Application.Features.Interfaces;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Data.Models;
@@ -9,14 +11,23 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
     public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ViewOrderDto>
     {
         private readonly AppDbContext dbContext;
+        private readonly IValidator<CreateOrderCommand> validator;
 
-        public CreateOrderCommandHandler(AppDbContext dbContext)
+        public CreateOrderCommandHandler(AppDbContext dbContext, IValidator<CreateOrderCommand> validator)
         {
             this.dbContext = dbContext;
+            this.validator = validator;
         }
 
         public async Task<ViewOrderDto?> HandleAsync(CreateOrderCommand createOrderCommand)
         {
+            ValidationResult validationResult = await this.validator.ValidateAsync(createOrderCommand);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             Order order = new Order
             {
                 CustomerFirstName = createOrderCommand.CustomerFirstName,
