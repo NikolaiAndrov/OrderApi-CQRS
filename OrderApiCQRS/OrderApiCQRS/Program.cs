@@ -33,6 +33,7 @@ builder.Services.AddScoped<IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrde
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValidator>();
 
+// Adding global exception handler middleware
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 
 var app = builder.Build();
