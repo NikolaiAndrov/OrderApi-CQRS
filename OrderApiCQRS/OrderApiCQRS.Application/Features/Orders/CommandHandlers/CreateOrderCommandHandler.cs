@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using OrderApiCQRS.Application.Events.Interfaces;
+using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
@@ -12,11 +14,15 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
     {
         private readonly AppDbContext dbContext;
         private readonly IValidator<CreateOrderCommand> validator;
+        private readonly IEventPublisher eventPublisher;
 
-        public CreateOrderCommandHandler(AppDbContext dbContext, IValidator<CreateOrderCommand> validator)
+        public CreateOrderCommandHandler(AppDbContext dbContext, 
+            IValidator<CreateOrderCommand> validator, 
+            IEventPublisher eventPublisher)
         {
             this.dbContext = dbContext;
             this.validator = validator;
+            this.eventPublisher = eventPublisher;
         }
 
         public async Task<ViewOrderDto?> HandleAsync(CreateOrderCommand createOrderCommand)
@@ -38,6 +44,16 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 
             await this.dbContext.Orders.AddAsync(order);
             await this.dbContext.SaveChangesAsync();
+
+            OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent
+            {
+                Id = order.Id,
+                CustomerFirstName = createOrderCommand.CustomerFirstName,
+                CustomerLastName = createOrderCommand.CustomerLastName,
+                TotalAmount = order.TotalAmount
+            };
+
+            await this.eventPublisher.PublishAsyunc(orderCreatedEvent);
 
             ViewOrderDto? viewOrderDto = new ViewOrderDto
             {

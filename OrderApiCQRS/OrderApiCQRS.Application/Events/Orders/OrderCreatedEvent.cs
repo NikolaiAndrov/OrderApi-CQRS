@@ -1,6 +1,6 @@
 ﻿namespace OrderApiCQRS.Application.Events.Orders
 {
-    public class OrderCreatedEvent
+    public record OrderCreatedEvent
     {
         public int Id { get; set; }
         
