@@ -50,6 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Global exception handling middleware
 app.UseMiddleware<GlobalExeptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
