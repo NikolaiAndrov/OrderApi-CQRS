@@ -2,6 +2,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Events;
 using OrderApiCQRS.Application.Events.Interfaces;
+using OrderApiCQRS.Application.Events.Orders;
+using OrderApiCQRS.Application.Events.Projections;
 using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
@@ -44,7 +46,10 @@ builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValid
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 
 // Adding event publisher
-builder.Services.AddSingleton<IEventPublisher, ConsoleEventPublisher>();
+builder.Services.AddSingleton<IEventPublisher, InProcessEventPublisher>();
+
+// Adding event handlers
+builder.Services.AddScoped<IEventHandler<OrderCreatedEvent>, OrderCreatedProjectionHandler>();
 
 var app = builder.Build();
 

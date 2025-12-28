@@ -18,7 +18,6 @@ namespace OrderApiCQRS.Application.Events.Projections
         {
             Order order = new Order
             {
-                Id = evt.Id,
                 CustomerFirstName = evt.CustomerFirstName,
                 CustomerLastName = evt.CustomerLastName,
                 Status = evt.Status,
