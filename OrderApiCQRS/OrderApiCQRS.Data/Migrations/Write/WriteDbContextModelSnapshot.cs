@@ -8,10 +8,10 @@ using OrderApiCQRS.Data;
 
 #nullable disable
 
-namespace OrderApiCQRS.Data.Migrations
+namespace OrderApiCQRS.Data.Migrations.Write
 {
-    [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(WriteDbContext))]
+    partial class WriteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

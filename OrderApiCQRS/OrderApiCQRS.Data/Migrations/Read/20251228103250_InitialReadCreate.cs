@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace OrderApiCQRS.Data.Migrations
+namespace OrderApiCQRS.Data.Migrations.Read
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialReadCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

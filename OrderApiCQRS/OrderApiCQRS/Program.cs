@@ -21,9 +21,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<ReadDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadConnection"));
+});
+
+builder.Services.AddDbContext<WriteDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WriteConnection"));
 });
 
 // Adding command and queries

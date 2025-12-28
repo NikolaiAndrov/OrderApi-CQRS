@@ -3,10 +3,10 @@ using OrderApiCQRS.Data.Models;
 
 namespace OrderApiCQRS.Data
 {
-    public class AppDbContext : DbContext
+    public class WriteDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions dbContextOptions)
-            : base(dbContextOptions)
+        public WriteDbContext(DbContextOptions<WriteDbContext> options)
+            : base(options)
         {
             
         }

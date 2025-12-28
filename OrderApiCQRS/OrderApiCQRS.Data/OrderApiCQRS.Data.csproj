@@ -22,4 +22,8 @@
     <ProjectReference Include="..\OrderApiCQRS.Data.Models\OrderApiCQRS.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

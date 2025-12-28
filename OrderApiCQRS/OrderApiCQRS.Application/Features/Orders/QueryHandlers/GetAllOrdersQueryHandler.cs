@@ -10,10 +10,10 @@ namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
 {
     public class GetAllOrdersQueryHandler : IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>
     {
-        private readonly AppDbContext dbContext;
+        private readonly ReadDbContext dbContext;
         private readonly IValidator<GetAllOrdersQuery> validator;
 
-        public GetAllOrdersQueryHandler(AppDbContext dbContext, IValidator<GetAllOrdersQuery> validator)
+        public GetAllOrdersQueryHandler(ReadDbContext dbContext, IValidator<GetAllOrdersQuery> validator)
         {
             this.dbContext = dbContext;
             this.validator = validator;

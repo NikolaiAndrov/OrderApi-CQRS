@@ -12,11 +12,11 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 {
     public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ViewOrderDto>
     {
-        private readonly AppDbContext dbContext;
+        private readonly WriteDbContext dbContext;
         private readonly IValidator<CreateOrderCommand> validator;
         private readonly IEventPublisher eventPublisher;
 
-        public CreateOrderCommandHandler(AppDbContext dbContext, 
+        public CreateOrderCommandHandler(WriteDbContext dbContext, 
             IValidator<CreateOrderCommand> validator, 
             IEventPublisher eventPublisher)
         {

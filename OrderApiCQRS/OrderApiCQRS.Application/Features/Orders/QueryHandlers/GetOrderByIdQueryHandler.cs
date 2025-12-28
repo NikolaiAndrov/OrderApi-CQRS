@@ -8,9 +8,9 @@ namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
 {
     public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, ViewOrderDto>
     {
-        private readonly AppDbContext dbContext;
+        private readonly ReadDbContext dbContext;
 
-        public GetOrderByIdQueryHandler(AppDbContext dbContext)
+        public GetOrderByIdQueryHandler(ReadDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
