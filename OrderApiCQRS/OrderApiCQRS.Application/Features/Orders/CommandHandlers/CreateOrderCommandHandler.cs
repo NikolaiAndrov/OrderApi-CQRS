@@ -50,6 +50,7 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
                 Id = order.Id,
                 CustomerFirstName = createOrderCommand.CustomerFirstName,
                 CustomerLastName = createOrderCommand.CustomerLastName,
+                Status = createOrderCommand.Status,
                 TotalAmount = order.TotalAmount
             };
 
