@@ -23,6 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Adding databases
 builder.Services.AddDbContext<ReadDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadConnection"));
