@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using OrderApiCQRS.Application.Events.Interfaces;
 using OrderApiCQRS.Application.Events.Orders;
-using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Data.Models;
