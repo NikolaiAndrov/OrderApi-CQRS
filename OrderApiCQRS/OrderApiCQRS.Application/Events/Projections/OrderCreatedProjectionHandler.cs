@@ -1,11 +1,11 @@
-﻿using OrderApiCQRS.Application.Events.Interfaces;
+﻿using MediatR;
 using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Data.Models;
 
 namespace OrderApiCQRS.Application.Events.Projections
 {
-    public class OrderCreatedProjectionHandler : IEventHandler<OrderCreatedEvent>
+    public class OrderCreatedProjectionHandler : INotificationHandler<OrderCreatedEvent>
     {
         private readonly ReadDbContext dbContext;
 
@@ -14,18 +14,18 @@ namespace OrderApiCQRS.Application.Events.Projections
             this.dbContext = dbContext;
         }
 
-        public async Task HandleAsync(OrderCreatedEvent evt)
+        public async Task Handle(OrderCreatedEvent notification, CancellationToken cancellationToken)
         {
             Order order = new Order
             {
-                CustomerFirstName = evt.CustomerFirstName,
-                CustomerLastName = evt.CustomerLastName,
-                Status = evt.Status,
-                TotalAmount = evt.TotalAmount
+                CustomerFirstName = notification.CustomerFirstName,
+                CustomerLastName = notification.CustomerLastName,
+                Status = notification.Status,
+                TotalAmount = notification.TotalAmount
             };
 
-            await this.dbContext.Orders.AddAsync(order);
-            await this.dbContext.SaveChangesAsync();
+            await this.dbContext.Orders.AddAsync(order, cancellationToken);
+            await this.dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
