@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrderApiCQRS.Application.Features.Interfaces;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
 {
-    public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, ViewOrderDto>
+    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, ViewOrderDto?>
     {
         private readonly ReadDbContext dbContext;
 
@@ -15,11 +15,11 @@ namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
             this.dbContext = dbContext;
         }
 
-        public async Task<ViewOrderDto?> HandleAsync(GetOrderByIdQuery getOrderByIdQuery)
+        public async Task<ViewOrderDto?> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
         {
             ViewOrderDto? viewOrderDto = await this.dbContext.Orders
                 .AsNoTracking()
-                .Where(o => o.Id == getOrderByIdQuery.Id)
+                .Where(o => o.Id == request.Id)
                 .Select(o => new ViewOrderDto
                 {
                     Id = o.Id,
@@ -27,7 +27,7 @@ namespace OrderApiCQRS.Application.Features.Products.QueryHandlers
                     Status = o.Status,
                     TotalAmount = o.TotalAmount
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             return viewOrderDto;
         }
