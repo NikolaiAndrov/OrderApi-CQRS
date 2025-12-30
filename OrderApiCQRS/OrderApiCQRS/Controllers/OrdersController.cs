@@ -43,7 +43,8 @@ namespace OrderApiCQRS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            ViewOrderDto? viewOrderDto = await this.mediator.Send(createOrderCommand);
+            int newOrderId = await this.mediator.Send(createOrderCommand);
+            ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(newOrderId));
 
             if (viewOrderDto == null)
             {

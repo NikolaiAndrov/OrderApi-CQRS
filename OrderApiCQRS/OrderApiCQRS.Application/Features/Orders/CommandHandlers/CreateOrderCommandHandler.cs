@@ -9,7 +9,7 @@ using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ViewOrderDto>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
     {
         private readonly WriteDbContext dbContext;
         private readonly IValidator<CreateOrderCommand> validator;
@@ -24,7 +24,7 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
             this.mediator = mediator;
         }
 
-        public async Task<ViewOrderDto> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             ValidationResult validationResult = await this.validator.ValidateAsync(request, cancellationToken);
 
@@ -55,15 +55,7 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 
             await this.mediator.Publish(orderCreatedEvent);
 
-            ViewOrderDto viewOrderDto = new ViewOrderDto
-            {
-                Id = order.Id,
-                CustomerFulltName = $"{order.CustomerFirstName} {order.CustomerLastName}",
-                Status = order.Status,
-                TotalAmount = order.TotalAmount
-            };
-
-            return viewOrderDto;
+            return order.Id;
         }
     }
 }
