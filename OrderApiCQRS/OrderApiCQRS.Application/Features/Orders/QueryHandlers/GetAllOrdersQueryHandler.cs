@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
 {
-    public class GetAllOrdersQueryHandler : IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>
+    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>
     {
         private readonly ReadDbContext dbContext;
         private readonly IValidator<GetAllOrdersQuery> validator;
@@ -19,22 +19,22 @@ namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
             this.validator = validator;
         }
 
-        public async Task<ICollection<ViewOrderDto>?> HandleAsync(GetAllOrdersQuery query)
+        public async Task<ICollection<ViewOrderDto>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
-            ValidationResult validationResult = await this.validator.ValidateAsync(query);
+            ValidationResult validationResult = await this.validator.ValidateAsync(request);
 
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
             }
 
-            int ordersToSkip = (query.page - 1) * query.ordersCount;
+            int ordersToSkip = (request.page - 1) * request.ordersCount;
 
             ICollection<ViewOrderDto> orders = await this.dbContext.Orders
                 .AsNoTracking()
                 .OrderBy(o => o.Id)
                 .Skip(ordersToSkip)
-                .Take(query.ordersCount)
+                .Take(request.ordersCount)
                 .Select(o => new ViewOrderDto
                 {
                     Id = o.Id,
@@ -42,7 +42,7 @@ namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
                     Status = o.Status,
                     TotalAmount = o.TotalAmount,
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return orders;
         }
