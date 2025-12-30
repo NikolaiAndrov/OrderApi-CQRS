@@ -2,8 +2,8 @@
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.DtoModels.Order;
-using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Queries;
+using MediatR;
 
 namespace OrderApiCQRS.Controllers
 {
@@ -11,23 +11,17 @@ namespace OrderApiCQRS.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler;
-        private readonly IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler;
-        private readonly IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>> getAllOrdersQueryHandler;
+        private readonly IMediator mediator;
 
-        public OrdersController(ICommandHandler<CreateOrderCommand, ViewOrderDto> createOrderCommandHandler,
-            IQueryHandler<GetOrderByIdQuery, ViewOrderDto> getOrderByIdQueryHandler,
-             IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>> getAllOrdersQueryHandler)
+        public OrdersController(IMediator mediator)
         {
-            this.createOrderCommandHandler = createOrderCommandHandler;
-            this.getOrderByIdQueryHandler = getOrderByIdQueryHandler;
-            this.getAllOrdersQueryHandler = getAllOrdersQueryHandler;
+            this.mediator = mediator;
         }
 
         [HttpGet("{Id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int Id)
         {
-            ViewOrderDto? viewOrderDto = await this.getOrderByIdQueryHandler.HandleAsync(new GetOrderByIdQuery(Id));
+            ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(Id));
 
             if (viewOrderDto == null)
             {
@@ -40,7 +34,7 @@ namespace OrderApiCQRS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetAllOrdersQuery getAllOrdersQuery)
         {
-            ICollection<ViewOrderDto>? viewOrderDtos = await this.getAllOrdersQueryHandler.HandleAsync(getAllOrdersQuery);
+            ICollection<ViewOrderDto>? viewOrderDtos = await this.mediator.Send(getAllOrdersQuery);
 
             return this.Ok(viewOrderDtos);
         }
@@ -48,7 +42,7 @@ namespace OrderApiCQRS.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            ViewOrderDto? viewOrderDto = await this.createOrderCommandHandler.HandleAsync(createOrderCommand);
+            ViewOrderDto? viewOrderDto = await this.mediator.Send(createOrderCommand);
 
             if (viewOrderDto == null)
             {
