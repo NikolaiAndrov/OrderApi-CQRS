@@ -1,6 +1,8 @@
-﻿namespace OrderApiCQRS.Application.Events.Orders
+﻿using MediatR;
+
+namespace OrderApiCQRS.Application.Events.Orders
 {
-    public record OrderCreatedEvent
+    public record OrderCreatedEvent : INotification
     {
         public int Id { get; set; }
         
