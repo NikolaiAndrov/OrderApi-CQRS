@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OrderApiCQRS.Application.Exceptions;
 using System.Net;
 using System.Text.Json;
 
@@ -41,7 +42,6 @@ namespace OrderApiCQRS.Middlewares
                 ProblemDetails problemDetails = new ProblemDetails
                 {
                     Status = statusCode,
-                    Type = message,
                     Title = message,
                     Detail = this.hostEnvironment.IsDevelopment() ? ex.Message : message
                 };
@@ -59,6 +59,7 @@ namespace OrderApiCQRS.Middlewares
                 ValidationException => (int)HttpStatusCode.BadRequest,
                 ArgumentException => (int)HttpStatusCode.BadRequest,
                 KeyNotFoundException => (int)HttpStatusCode.NotFound,
+                NotFoundException => (int)HttpStatusCode.NotFound,
                 UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
                 DbUpdateConcurrencyException => (int)HttpStatusCode.Conflict,
                 _ => (int)HttpStatusCode.InternalServerError
@@ -69,8 +70,9 @@ namespace OrderApiCQRS.Middlewares
         {
             return ex switch
             {
-                ArgumentException => "Bad Request!",
+                ArgumentException => "Incorrect Request!",
                 KeyNotFoundException => "Not Found!",
+                NotFoundException => "Not Found!",
                 UnauthorizedAccessException => "Unauthorized!",
                 DbUpdateConcurrencyException => "Concurrency conflict!",
                 _ => "Internal ServerError!"
