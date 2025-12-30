@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.Commands
 {

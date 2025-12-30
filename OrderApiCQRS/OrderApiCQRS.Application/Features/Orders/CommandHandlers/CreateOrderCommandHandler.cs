@@ -5,7 +5,6 @@ using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Data.Models;
-using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 {
