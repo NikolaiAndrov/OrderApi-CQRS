@@ -2,19 +2,11 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Events;
 using OrderApiCQRS.Application.Events.Interfaces;
-using OrderApiCQRS.Application.Events.Orders;
-using OrderApiCQRS.Application.Events.Projections;
-using OrderApiCQRS.Application.Features.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
-using OrderApiCQRS.Application.Features.Orders.QueryHandlers;
-using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Application.Features.Products.Commands;
-using OrderApiCQRS.Application.Features.Products.Queries;
-using OrderApiCQRS.Application.Features.Products.QueryHandlers;
 using OrderApiCQRS.Data;
-using OrderApiCQRS.DtoModels.Order;
 using OrderApiCQRS.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,11 +26,6 @@ builder.Services.AddDbContext<WriteDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteConnection"));
 });
 
-// Adding command and queries
-builder.Services.AddScoped<ICommandHandler<CreateOrderCommand, ViewOrderDto>, CreateOrderCommandHandler>();
-builder.Services.AddScoped<IQueryHandler<GetOrderByIdQuery, ViewOrderDto>, GetOrderByIdQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>, GetAllOrdersQueryHandler>();
-
 // Adding validators
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValidator>();
@@ -48,9 +35,6 @@ builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 
 // Adding event publisher
 builder.Services.AddSingleton<IEventPublisher, InProcessEventPublisher>();
-
-// Adding event handlers
-builder.Services.AddScoped<IEventHandler<OrderCreatedEvent>, OrderCreatedProjectionHandler>();
 
 // Adding AddMediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
