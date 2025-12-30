@@ -5,6 +5,7 @@ using OrderApiCQRS.Application.Events.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
+using OrderApiCQRS.Application.Features.Products.CommandHandlers;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Middlewares;
@@ -37,7 +38,7 @@ builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 builder.Services.AddSingleton<IEventPublisher, InProcessEventPublisher>();
 
 // Adding AddMediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly));
 
 var app = builder.Build();
 
