@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using MediatR;
 using OrderApiCQRS.Application.Events.Interfaces;
 using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Features.Interfaces;
@@ -10,24 +11,24 @@ using OrderApiCQRS.DtoModels.Order;
 
 namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 {
-    public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ViewOrderDto>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ViewOrderDto>
     {
         private readonly WriteDbContext dbContext;
         private readonly IValidator<CreateOrderCommand> validator;
-        private readonly IEventPublisher eventPublisher;
+        private readonly IMediator mediator;
 
         public CreateOrderCommandHandler(WriteDbContext dbContext, 
-            IValidator<CreateOrderCommand> validator, 
-            IEventPublisher eventPublisher)
+            IValidator<CreateOrderCommand> validator,
+            IMediator mediator)
         {
             this.dbContext = dbContext;
             this.validator = validator;
-            this.eventPublisher = eventPublisher;
+            this.mediator = mediator;
         }
 
-        public async Task<ViewOrderDto?> HandleAsync(CreateOrderCommand createOrderCommand)
+        public async Task<ViewOrderDto> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            ValidationResult validationResult = await this.validator.ValidateAsync(createOrderCommand);
+            ValidationResult validationResult = await this.validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
             {
@@ -36,27 +37,27 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 
             Order order = new Order
             {
-                CustomerFirstName = createOrderCommand.CustomerFirstName,
-                CustomerLastName = createOrderCommand.CustomerLastName,
-                Status = createOrderCommand.Status,
-                TotalAmount = createOrderCommand.TotalAmount
+                CustomerFirstName = request.CustomerFirstName,
+                CustomerLastName = request.CustomerLastName,
+                Status = request.Status,
+                TotalAmount = request.TotalAmount
             };
 
-            await this.dbContext.Orders.AddAsync(order);
-            await this.dbContext.SaveChangesAsync();
+            await this.dbContext.Orders.AddAsync(order, cancellationToken);
+            await this.dbContext.SaveChangesAsync(cancellationToken);
 
             OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent
             {
                 Id = order.Id,
-                CustomerFirstName = createOrderCommand.CustomerFirstName,
-                CustomerLastName = createOrderCommand.CustomerLastName,
-                Status = createOrderCommand.Status,
+                CustomerFirstName = request.CustomerFirstName,
+                CustomerLastName = request.CustomerLastName,
+                Status = request.Status,
                 TotalAmount = order.TotalAmount
             };
 
-            await this.eventPublisher.PublishAsyunc(orderCreatedEvent);
+            await this.mediator.Publish(orderCreatedEvent);
 
-            ViewOrderDto? viewOrderDto = new ViewOrderDto
+            ViewOrderDto viewOrderDto = new ViewOrderDto
             {
                 Id = order.Id,
                 CustomerFulltName = $"{order.CustomerFirstName} {order.CustomerLastName}",
