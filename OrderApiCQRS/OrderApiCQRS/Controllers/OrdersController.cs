@@ -4,6 +4,7 @@ using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.DtoModels.Order;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using MediatR;
+using OrderApiCQRS.Application.Features.Orders.Commands;
 
 namespace OrderApiCQRS.Controllers
 {
@@ -50,6 +51,13 @@ namespace OrderApiCQRS.Controllers
             }
 
             return this.CreatedAtAction(nameof(this.GetById), new { Id = viewOrderDto.Id }, viewOrderDto);
+        }
+
+        [HttpDelete("{Id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int Id)
+        {
+            await this.mediator.Send(new DeleteOrderCommand(Id));
+            return this.NoContent();
         }
     }
 }

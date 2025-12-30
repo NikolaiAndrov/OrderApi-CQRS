@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Exceptions;
 using OrderApiCQRS.Application.Features.Orders.Commands;
