@@ -52,6 +52,9 @@ builder.Services.AddSingleton<IEventPublisher, InProcessEventPublisher>();
 // Adding event handlers
 builder.Services.AddScoped<IEventHandler<OrderCreatedEvent>, OrderCreatedProjectionHandler>();
 
+// Adding AddMediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
