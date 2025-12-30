@@ -1,7 +1,5 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using OrderApiCQRS.Application.Events;
-using OrderApiCQRS.Application.Events.Interfaces;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
@@ -33,9 +31,6 @@ builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValid
 
 // Adding global exception handler middleware
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
-
-// Adding event publisher
-builder.Services.AddSingleton<IEventPublisher, InProcessEventPublisher>();
 
 // Adding AddMediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly));
