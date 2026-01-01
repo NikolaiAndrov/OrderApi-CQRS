@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Application.Features.Products.Queries;
 using OrderApiCQRS.DtoModels.Order;
 using OrderApiCQRS.Application.Features.Orders.Queries;
-using MediatR;
 using OrderApiCQRS.Application.Features.Orders.Commands;
 
 namespace OrderApiCQRS.Controllers
