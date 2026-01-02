@@ -25,10 +25,7 @@ namespace OrderApiCQRS.Data.Migrations.Read
             modelBuilder.Entity("OrderApiCQRS.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

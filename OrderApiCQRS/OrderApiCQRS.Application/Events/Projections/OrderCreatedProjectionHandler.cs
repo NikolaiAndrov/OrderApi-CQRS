@@ -18,6 +18,7 @@ namespace OrderApiCQRS.Application.Events.Projections
         {
             Order order = new Order
             {
+                Id = notification.Id,
                 CustomerFirstName = notification.CustomerFirstName,
                 CustomerLastName = notification.CustomerLastName,
                 Status = notification.Status,

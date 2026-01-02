@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Data.Models;
+using System.Reflection;
 
 namespace OrderApiCQRS.Data
 {
@@ -12,5 +13,13 @@ namespace OrderApiCQRS.Data
         }
 
         public DbSet<Order> Orders { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            Assembly configAssembly = Assembly.GetAssembly(typeof(ReadDbContext)) ?? Assembly.GetExecutingAssembly();
+            modelBuilder.ApplyConfigurationsFromAssembly(configAssembly);
+        }
     }
 }

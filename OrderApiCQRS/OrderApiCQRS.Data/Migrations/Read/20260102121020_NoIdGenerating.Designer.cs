@@ -12,8 +12,8 @@ using OrderApiCQRS.Data;
 namespace OrderApiCQRS.Data.Migrations.Read
 {
     [DbContext(typeof(ReadDbContext))]
-    [Migration("20251228103250_InitialReadCreate")]
-    partial class InitialReadCreate
+    [Migration("20260102121020_NoIdGenerating")]
+    partial class NoIdGenerating
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,10 +28,7 @@ namespace OrderApiCQRS.Data.Migrations.Read
             modelBuilder.Entity("OrderApiCQRS.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
