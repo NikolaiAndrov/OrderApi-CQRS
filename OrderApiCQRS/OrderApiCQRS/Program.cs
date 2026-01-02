@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using OrderApiCQRS.Application.Features.Orders.Commands;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<WriteDbContext>(options =>
 // Adding validators
 builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValidator>();
+builder.Services.AddScoped<IValidator<UpdateOrderCommand>, UpdateOrderCommandValidator>();
 
 // Adding global exception handler middleware
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();

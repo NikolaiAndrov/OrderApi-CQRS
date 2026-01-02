@@ -19,7 +19,7 @@ namespace OrderApiCQRS.Controllers
             this.mediator = mediator;
         }
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(id));
@@ -54,17 +54,30 @@ namespace OrderApiCQRS.Controllers
             return this.CreatedAtAction(nameof(this.GetById), new { Id = viewOrderDto.Id }, viewOrderDto);
         }
 
-        [HttpDelete("{Id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await this.mediator.Send(new DeleteOrderCommand(id));
             return this.NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOrderCommand updateOrderCommand)
         {
-            return this.Ok();
+            if (id != updateOrderCommand.Id)
+            {
+                return this.BadRequest();
+            }
+
+            int updatedOrderId = await this.mediator.Send(updateOrderCommand);
+            ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(updatedOrderId));
+
+            if (viewOrderDto == null)
+            {
+                return this.BadRequest(); 
+            }
+
+            return this.Ok(viewOrderDto);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Exceptions;
 using OrderApiCQRS.Application.Features.Orders.Commands;
 using OrderApiCQRS.Data;
@@ -44,6 +45,17 @@ namespace OrderApiCQRS.Application.Features.Orders.CommandHandlers
             order.TotalAmount = request.TotalAmount;
 
             await this.dbContext.SaveChangesAsync(cancellationToken);
+
+            OrderUpdatedEvent orderUpdatedEvent = new OrderUpdatedEvent
+            {
+                Id = order.Id,
+                CustomerFirstName = order.CustomerFirstName,
+                CustomerLastName = order.CustomerLastName,
+                Status = order.Status,
+                TotalAmount = order.TotalAmount,
+            };
+
+            await this.mediator.Publish(orderUpdatedEvent, cancellationToken);
 
             return order.Id;
         }

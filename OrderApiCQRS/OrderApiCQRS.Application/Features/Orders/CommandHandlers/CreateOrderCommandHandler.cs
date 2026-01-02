@@ -52,7 +52,7 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
                 TotalAmount = order.TotalAmount
             };
 
-            await this.mediator.Publish(orderCreatedEvent);
+            await this.mediator.Publish(orderCreatedEvent, cancellationToken);
 
             return order.Id;
         }
