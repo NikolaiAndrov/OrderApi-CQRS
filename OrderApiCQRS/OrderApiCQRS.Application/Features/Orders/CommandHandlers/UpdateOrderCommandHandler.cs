@@ -47,13 +47,13 @@ namespace OrderApiCQRS.Application.Features.Orders.CommandHandlers
             await this.dbContext.SaveChangesAsync(cancellationToken);
 
             OrderUpdatedEvent orderUpdatedEvent = new OrderUpdatedEvent
-            {
-                Id = order.Id,
-                CustomerFirstName = order.CustomerFirstName,
-                CustomerLastName = order.CustomerLastName,
-                Status = order.Status,
-                TotalAmount = order.TotalAmount,
-            };
+            (
+                order.Id,
+                order.CustomerFirstName,
+                order.CustomerLastName,
+                order.Status,
+                order.TotalAmount
+            );
 
             await this.mediator.Publish(orderUpdatedEvent, cancellationToken);
 

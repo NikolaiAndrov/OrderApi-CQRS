@@ -2,16 +2,5 @@
 
 namespace OrderApiCQRS.Application.Events.Orders
 {
-    public record OrderUpdatedEvent : INotification
-    {
-        public int Id { get; set; }
-
-        public string CustomerFirstName { get; set; } = string.Empty;
-
-        public string CustomerLastName { get; set; } = string.Empty;
-
-        public string Status { get; set; } = string.Empty;
-
-        public decimal TotalAmount { get; set; }
-    }
+    public record OrderUpdatedEvent(int Id, string CustomerFirstName, string CustomerLastName, string Status, decimal TotalAmount) : INotification;
 }
