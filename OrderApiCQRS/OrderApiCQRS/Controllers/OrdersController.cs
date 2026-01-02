@@ -20,9 +20,9 @@ namespace OrderApiCQRS.Controllers
         }
 
         [HttpGet("{Id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int Id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(Id));
+            ViewOrderDto? viewOrderDto = await this.mediator.Send(new GetOrderByIdQuery(id));
 
             if (viewOrderDto == null)
             {
@@ -55,10 +55,16 @@ namespace OrderApiCQRS.Controllers
         }
 
         [HttpDelete("{Id:int}")]
-        public async Task<IActionResult> Delete([FromRoute] int Id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await this.mediator.Send(new DeleteOrderCommand(Id));
+            await this.mediator.Send(new DeleteOrderCommand(id));
             return this.NoContent();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOrderCommand updateOrderCommand)
+        {
+            return this.Ok();
         }
     }
 }
