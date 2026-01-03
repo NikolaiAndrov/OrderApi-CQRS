@@ -43,6 +43,16 @@ It separates read and write operations and uses two different databases to clear
 
 - Optimized strictly for data retrieval
 
+### Validation
+
+- All commands are validated using FluentValidation before they are handled.
+- If validation fails, the request is rejected early.
+
+### MediatR
+
+- Controllers do not contain business logic.
+- They send commands or queries through MediatR, keeping controllers thin and clean.
+
 ### Events & Projections
 
 - The system uses events and projections to keep the read database in sync with the write database:
