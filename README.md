@@ -77,6 +77,14 @@ It separates read and write operations and uses two different databases to clear
 
 - A scalable and extensible CQRS workflow
 
+### Error Handling
+
+- Global exception handling middleware
+
+- Consistent API error responses
+
+- No try/catch in handlers
+
 ### Notes
 
 - This project is intended as a CQRS reference/learning project
