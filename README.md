@@ -76,3 +76,11 @@ It separates read and write operations and uses two different databases to clear
 - Clear separation of responsibilities
 
 - A scalable and extensible CQRS workflow
+
+### Notes
+
+- This project is intended as a CQRS reference/learning project
+
+- Not over-engineered, but structured correctly
+
+- Easy to extend with features like caching, logging, or event-driven updates
