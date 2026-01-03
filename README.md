@@ -5,7 +5,7 @@ It separates read and write operations and uses two different databases to clear
 
 ## Tech Stack
 
-.NET 8
+- .NET 8
 
 - ASP.NET Core Web API
 
