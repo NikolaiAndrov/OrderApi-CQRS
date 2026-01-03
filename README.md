@@ -61,7 +61,7 @@ It separates read and write operations and uses two different databases to clear
 
 - Events are handled asynchronously via event handlers
 
-- Projection handlers contain the logic to:
+- Projections handle the events and contain the logic to:
 
 - Transform event data into read models
 
