@@ -3,7 +3,7 @@
 This project is a .NET 8 Web API built using CQRS, MediatR, and FluentValidation.
 It separates read and write operations and uses two different databases to clearly demonstrate the CQRS pattern.
 
-##Tech Stack
+## Tech Stack
 
 .NET 8
 
@@ -19,7 +19,7 @@ Entity Framework Core
 
 Separate Read & Write Databases
 
-##Architecture Overview
+## Architecture Overview
 
 The application follows CQRS (Command Query Responsibility Segregation) with a clear separation between reads and writes.
 
