@@ -17,6 +17,8 @@ It separates read and write operations and uses two different databases to clear
 
 - Entity Framework Core
 
+- SQL Server
+
 - Separate Read & Write Databases
 
 ## Architecture Overview
