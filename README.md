@@ -7,7 +7,7 @@ It separates read and write operations and uses two different databases to clear
 
 .NET 8
 
-ASP.NET Core Web API
+- ASP.NET Core Web API
 
 CQRS
 
