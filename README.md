@@ -1,7 +1,7 @@
 # .NET 8 Web API – CQRS
 
-***Bold & Italic*** This project is a .NET 8 Web API built using CQRS, MediatR, and FluentValidation.
-It separates read and write operations and uses two different databases to clearly demonstrate the CQRS pattern.
+***This project is a .NET 8 Web API built using CQRS, MediatR, and FluentValidation.
+It separates read and write operations and uses two different databases to clearly demonstrate the CQRS pattern.***
 
 ## Tech Stack
 
