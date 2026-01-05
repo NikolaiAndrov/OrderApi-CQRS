@@ -2,12 +2,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Behaviors;
-using OrderApiCQRS.Application.Features.Orders.Commands;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
-using OrderApiCQRS.Application.Features.Orders.Queries;
-using OrderApiCQRS.Application.Features.Orders.Queries.Validators;
 using OrderApiCQRS.Application.Features.Products.CommandHandlers;
-using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
 using OrderApiCQRS.Middlewares;
 
