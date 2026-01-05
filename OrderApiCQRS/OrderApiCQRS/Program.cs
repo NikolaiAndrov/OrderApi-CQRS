@@ -27,9 +27,7 @@ builder.Services.AddDbContext<WriteDbContext>(options =>
 });
 
 // Adding validators
-builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
-builder.Services.AddScoped<IValidator<GetAllOrdersQuery>, GetAllOrdersQueryValidator>();
-builder.Services.AddScoped<IValidator<UpdateOrderCommand>, UpdateOrderCommandValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
 
 // Adding global exception handler middleware
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
