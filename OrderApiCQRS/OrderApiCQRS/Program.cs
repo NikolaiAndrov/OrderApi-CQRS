@@ -1,5 +1,7 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrderApiCQRS.Application.Behaviors;
 using OrderApiCQRS.Application.Features.Orders.Commands;
 using OrderApiCQRS.Application.Features.Orders.Commands.Validators;
 using OrderApiCQRS.Application.Features.Orders.Queries;
@@ -26,14 +28,20 @@ builder.Services.AddDbContext<WriteDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteConnection"));
 });
 
-// Adding validators
-builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
-
 // Adding global exception handler middleware
 builder.Services.AddScoped<GlobalExeptionHandlingMiddleware>();
 
 // Adding AddMediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommandHandler).Assembly));
+
+// Adding validators
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
+
+// Adding/Automating validations
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(ValidationBehavior<,>)
+);
 
 var app = builder.Build();
 

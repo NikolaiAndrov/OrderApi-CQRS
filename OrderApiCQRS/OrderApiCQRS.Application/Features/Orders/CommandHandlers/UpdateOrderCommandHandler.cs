@@ -32,13 +32,6 @@ namespace OrderApiCQRS.Application.Features.Orders.CommandHandlers
                 throw new NotFoundException($"Order with id {request.Id} was not found!");
             }
 
-            ValidationResult validationResult = await this.validator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
             order.CustomerFirstName = request.CustomerFirstName;
             order.CustomerLastName = request.CustomerLastName;
             order.Status = request.Status;

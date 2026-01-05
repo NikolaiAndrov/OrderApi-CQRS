@@ -25,13 +25,6 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
 
         public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            ValidationResult validationResult = await this.validator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
             Order order = new Order
             {
                 CustomerFirstName = request.CustomerFirstName,

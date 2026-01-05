@@ -21,13 +21,6 @@ namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
 
         public async Task<ICollection<ViewOrderDto>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
-            ValidationResult validationResult = await this.validator.ValidateAsync(request);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
             int ordersToSkip = (request.page - 1) * request.ordersCount;
 
             ICollection<ViewOrderDto> orders = await this.dbContext.Orders
