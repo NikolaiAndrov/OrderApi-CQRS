@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using MediatR;
+﻿using MediatR;
 using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Features.Products.Commands;
 using OrderApiCQRS.Data;
@@ -11,15 +9,11 @@ namespace OrderApiCQRS.Application.Features.Products.CommandHandlers
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
     {
         private readonly WriteDbContext dbContext;
-        private readonly IValidator<CreateOrderCommand> validator;
         private readonly IMediator mediator;
 
-        public CreateOrderCommandHandler(WriteDbContext dbContext, 
-            IValidator<CreateOrderCommand> validator,
-            IMediator mediator)
+        public CreateOrderCommandHandler(WriteDbContext dbContext, IMediator mediator)
         {
             this.dbContext = dbContext;
-            this.validator = validator;
             this.mediator = mediator;
         }
 

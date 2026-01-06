@@ -18,7 +18,7 @@ namespace OrderApiCQRS.Application.Events.Projections
         public async Task Handle(OrderUpdatedEvent notification, CancellationToken cancellationToken)
         {
             Order? order = await this.dbContext.Orders
-                .FindAsync( notification.Id,cancellationToken);
+                .FindAsync(notification.Id, cancellationToken);
 
             if (order == null)
             {

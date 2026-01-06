@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using MediatR;
+﻿using MediatR;
 using OrderApiCQRS.Application.Events.Orders;
 using OrderApiCQRS.Application.Exceptions;
 using OrderApiCQRS.Application.Features.Orders.Commands;
@@ -12,13 +10,11 @@ namespace OrderApiCQRS.Application.Features.Orders.CommandHandlers
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand ,int>
     {
         private readonly WriteDbContext dbContext;
-        private readonly IValidator<UpdateOrderCommand> validator;
         private readonly IMediator mediator;
 
-        public UpdateOrderCommandHandler(WriteDbContext dbContext, IValidator<UpdateOrderCommand> validator, IMediator mediator)
+        public UpdateOrderCommandHandler(WriteDbContext dbContext, IMediator mediator)
         {
             this.dbContext = dbContext;
-            this.validator = validator;
             this.mediator = mediator;
         }
 

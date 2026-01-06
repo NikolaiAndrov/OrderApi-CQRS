@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderApiCQRS.Application.Features.Orders.Queries;
 using OrderApiCQRS.Data;
@@ -11,12 +9,10 @@ namespace OrderApiCQRS.Application.Features.Orders.QueryHandlers
     public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, ICollection<ViewOrderDto>>
     {
         private readonly ReadDbContext dbContext;
-        private readonly IValidator<GetAllOrdersQuery> validator;
 
-        public GetAllOrdersQueryHandler(ReadDbContext dbContext, IValidator<GetAllOrdersQuery> validator)
+        public GetAllOrdersQueryHandler(ReadDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.validator = validator;
         }
 
         public async Task<ICollection<ViewOrderDto>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
